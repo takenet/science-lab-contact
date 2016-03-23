@@ -29,7 +29,7 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
             var builder = new QueryBuilder();
             builder.AppId = _wolframAlphaAccessKey;
             builder.Input = inputQuery;
-            builder.Format = "PlainText";
+            builder.Format = "Image";
 
             var request = new QueryRequest();
             var uri = builder.QueryUri;

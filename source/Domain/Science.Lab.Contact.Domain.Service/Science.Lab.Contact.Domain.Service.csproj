@@ -90,8 +90,8 @@
       <HintPath>..\..\packages\Takenet.MessagingHub.Client.0.2.131\lib\net461\Takenet.MessagingHub.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WolframAlpha.Api.v2, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WolframAlpha.Api.v2.1.0.1\lib\portable-net45+sl5+wp8+win8\WolframAlpha.Api.v2.dll</HintPath>
+    <Reference Include="Takenet.Omni.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Takenet.Omni.Model.1.0.1\lib\net461\Takenet.Omni.Model.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -99,6 +99,59 @@
     <Compile Include="PlainTextMessageReceiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="WolframAlpha.Api.v2\ApiConstants.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Attributes\QueryParameterAttribute.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\ApiResult.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Assumption.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\AssumptionsCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\AssumptionValue.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\DelimitersWarning.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\DidYouMeansCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Error.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\ExamplePage.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\FutureTopic.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Generalization.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Image.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\ImageMap.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Info.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\InfoCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\LanguageMsg.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Link.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Pod.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\QueryResult.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Rect.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\ReinterpretWarning.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\RelatedExample.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\RelatedExamplesCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Sound.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\SoundCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Source.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\SourceCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\SpellCheckWarning.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\State.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\StateCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\StateList.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\SubPod.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Tip.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\TipsCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\TranslationWarning.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\Unit.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\UnitsCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\ValidateQueryResult.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Components\WarningCollection.cs" />
+    <Compile Include="WolframAlpha.Api.v2\HttpValueCollectionLite.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Http\DefaultHttpClientFactory.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Http\IHttpClientFactory.cs" />
+    <Compile Include="WolframAlpha.Api.v2\QueryBuilder.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Requests\ApiRequest.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Requests\ApiRequestContract.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Requests\IApiRequest.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Requests\QueryRequest.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Requests\ValidateQueryRequest.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Serializers\ApiSerializer.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Serializers\DefaultApiSerializerFactory.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Serializers\IApiSerializer.cs" />
+    <Compile Include="WolframAlpha.Api.v2\Serializers\IApiSerializerFactory.cs" />
     <Compile Include="WolframAplha\WolframAplhaRepository.cs" />
     <Compile Include="WolframAplha\WolframAplhaService.cs" />
   </ItemGroup>

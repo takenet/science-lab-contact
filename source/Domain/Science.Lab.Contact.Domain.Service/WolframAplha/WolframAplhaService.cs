@@ -40,13 +40,8 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
 
         public async Task<IEnumerable<Message>> Query(Message message)
         {
-            if (!Object.Equals(message.Content.GetMediaType().Type, MediaType.DiscreteTypes.Text))
-            {
-                throw new Exception($"Invalid query with type: {message.Content.GetMediaType()}");
-            }
-
             QueryResult queryResult = await _wolframAplhaRepository.Query(message.Content.ToString());
-            var list = await QueryResult2MessageList(queryResult, "PlainText");
+            var list = await QueryResult2MessageList(queryResult, "Image");
             return list;
         }
 
@@ -88,6 +83,16 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
                 if (outputFormat == "PlainText")
                 {
                     string content = subpod.PlainText;
+                    var message = new Message
+                    {
+                        Content = new PlainDocument(content, PlainType)
+                    };
+                    list.Add(message);
+                }
+                else if(outputFormat == "Image")
+                {
+                    string content = subpod.Img.Src;
+                    var  imageType = new MediaType(MediaType.DiscreteTypes.Image, MediaType.SubTypes.Plain);
                     var message = new Message
                     {
                         Content = new PlainDocument(content, PlainType)
