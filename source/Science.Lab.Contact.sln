@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationService", "ApplicationService", "{9B9EE44E-E6BE-4DFF-9BF2-665ABD73091B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{B4645B46-E5CC-4BE4-945C-4DE3E24F26BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2D92F970-8601-4B9F-8DF4-31AA99E9638A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ui", "Ui", "{1E04694D-A72B-4402-97D7-461BE61F7631}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{BD2635E6-333B-4E21-9939-4A9145C7584B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Science.Lab.Contact.Domain.Service", "Domain\Science.Lab.Contact.Domain.Service\Science.Lab.Contact.Domain.Service.csproj", "{66C4D057-444D-445F-96DE-33F00AE8A7ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A19A58EB-2C14-481D-BED3-E58F84EEF99C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66C4D057-444D-445F-96DE-33F00AE8A7ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66C4D057-444D-445F-96DE-33F00AE8A7ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66C4D057-444D-445F-96DE-33F00AE8A7ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66C4D057-444D-445F-96DE-33F00AE8A7ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{66C4D057-444D-445F-96DE-33F00AE8A7ED} = {B4645B46-E5CC-4BE4-945C-4DE3E24F26BD}
+	EndGlobalSection
+EndGlobal

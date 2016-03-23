@@ -1,0 +1,15 @@
+﻿{
+  /* Retrieve your application's login and access key at http://messaginghub.io */
+  "login": "hQHQ83VTcegaYpb3",
+  "accessKey": "ZjNGdDA0",
+  "messageReceivers": [
+    {
+      "type": "PlainTextMessageReceiver",
+      "mediaType": "text/plain"
+    }
+  ],
+  "startupType": "Startup",
+  "settings": {
+    "wolframAlphaAccessKey": "VJJR44-EE2LXRPRGG"
+  }
+}

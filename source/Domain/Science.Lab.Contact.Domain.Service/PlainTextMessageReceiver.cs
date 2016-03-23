@@ -1,0 +1,44 @@
+using Lime.Protocol;
+using Science.Lab.Contact.Domain.Service.WolframAplha;
+using System;
+using System.Threading.Tasks;
+using Takenet.MessagingHub.Client;
+using Takenet.MessagingHub.Client.Receivers;
+
+namespace Science.Lab.Contact.Domain.Service
+{
+    public class PlainTextMessageReceiver : MessageReceiverBase
+    {
+        #region Private Field
+        
+        private IWolframAplhaService _wolframAplhaService
+        {
+            get
+            {
+                return new WolframAplhaService();
+            }
+        }
+
+        #endregion
+        
+        #region Constructor
+
+        public PlainTextMessageReceiver()
+        {
+            
+        }
+
+        #endregion
+
+        public override async Task ReceiveAsync(Message message)
+        {
+            var messages = await _wolframAplhaService.Query(message);
+
+            foreach (var item in messages)
+            {
+                await EnvelopeSender.SendMessageAsync(message.Content, message.From);
+                await EnvelopeSender.SendNotificationAsync(message.ToConsumedNotification());
+            }
+        }
+    }
+}
