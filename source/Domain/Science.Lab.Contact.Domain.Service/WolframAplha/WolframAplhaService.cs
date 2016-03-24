@@ -10,7 +10,7 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
 {
     public interface IWolframAplhaService
     {
-        Task<IEnumerable<Message>> Query(Message receivedMessage);
+        Task<IEnumerable<Document>> Query(Message receivedMessage);
     }
 
     public class WolframAplhaService : IWolframAplhaService
@@ -38,42 +38,42 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
 
         #region IWolframAplhaService members
 
-        public async Task<IEnumerable<Message>> Query(Message message)
+        public async Task<IEnumerable<Document>> Query(Message message)
         {
             QueryResult queryResult = await _wolframAplhaRepository.Query(message.Content.ToString());
-            var list = await QueryResult2MessageList(queryResult, "Image");
-            return list;
+            var documents = await QueryResult2MessageList(queryResult, "Image");
+            return documents;
         }
 
-        private async Task<IEnumerable<Message>> QueryResult2MessageList(QueryResult result, string outputFormat)
+        private async Task<IEnumerable<Document>> QueryResult2MessageList(QueryResult result, string outputFormat)
         {
-            var list = new List<Message>();
+            var documents = new List<Document>();
             foreach (Pod pod in result.Pods)
             {
                 var response = await WolframPod2MessageList(pod, outputFormat);
-                list.AddRange(response);
+                documents.AddRange(response);
             };
 
-            return list;
+            return documents;
         }
 
-        private async Task<IEnumerable<Message>> WolframPod2MessageList(Pod pod, string outputFormat)
+        private async Task<IEnumerable<Document>> WolframPod2MessageList(Pod pod, string outputFormat)
         {
-            var list = new List<Message>();
+            var documents = new List<Document>();
             foreach (SubPod subpod in pod.SubPods)
             {
                 var response = await WolframSubPod2Message(subpod, outputFormat);
-                list.AddRange(response);
+                documents.AddRange(response);
             };
 
-            return list;
+            return documents;
         }
 
-        private async Task<IEnumerable<Message>> WolframSubPod2Message(SubPod subpod, string outputFormat)
+        private async Task<IEnumerable<Document>> WolframSubPod2Message(SubPod subpod, string outputFormat)
         {
-            var messageList = await Task.Run<IEnumerable<Message>>(() =>
+            var documents = await Task.Run<IEnumerable<Document>>(() =>
             {
-                var list = new List<Message>();
+                var list = new List<Document>();
                 MediaType PlainType = new MediaType(MediaType.DiscreteTypes.Text, MediaType.SubTypes.Plain);
                 var titleMessage = new Message
                 {
@@ -83,26 +83,20 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
                 if (outputFormat == "PlainText")
                 {
                     string content = subpod.PlainText;
-                    var message = new Message
-                    {
-                        Content = new PlainDocument(content, PlainType)
-                    };
-                    list.Add(message);
+                    var doc = new PlainDocument(content, PlainType);
+                    list.Add(doc);
                 }
                 else if(outputFormat == "Image")
                 {
                     string content = subpod.Img.Src;
                     var  imageType = new MediaType(MediaType.DiscreteTypes.Image, MediaType.SubTypes.Plain);
-                    var message = new Message
-                    {
-                        Content = new PlainDocument(content, PlainType)
-                    };
-                    list.Add(message);
+                    var doc = new PlainDocument(content, PlainType);
+                    list.Add(doc);
                 }
 
                 return list;
             });
-            return messageList;
+            return documents;
         }
 
         #endregion
