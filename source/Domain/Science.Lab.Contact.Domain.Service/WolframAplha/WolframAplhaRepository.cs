@@ -29,7 +29,9 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
             var builder = new QueryBuilder();
             builder.AppId = _wolframAlphaAccessKey;
             builder.Input = inputQuery;
-            builder.Format = "Image";
+            builder.Format = "plaintext,image";
+            builder.MaxWidth = "200";
+            builder.PlotWidth = "200";
 
             var request = new QueryRequest();
             var uri = builder.QueryUri;
