@@ -47,11 +47,43 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
             if (documents.Count > 1)
             {
                 StringBuilder strBuild = new StringBuilder();
-                strBuild.Append(documents[0].Document.ToString());
-                strBuild.Append(", escolha: \n");
+
+                Document document = null;
+
+                var primaryDocument = documents.Where(x => x.Primary).FirstOrDefault();
+
+                if (primaryDocument != null)
+                {
+                    document = primaryDocument.Document;
+                }
+                else
+                {
+                    document = documents[0].Document;
+                }
+
+                var text = string.Empty;
+
+                if (document is PlainDocument)
+                {
+                    text = (document as PlainDocument).Value;
+                }
+                else if (document is TextWithAttachments)
+                {
+                    text = (document as TextWithAttachments).Text;
+                }
+
+                if (string.IsNullOrEmpty(text))
+                {
+                    strBuild.Append("Got some information for you. Please choose an opc: \n");
+                }
+                else
+                {
+                    strBuild.Append($"Got some information for you. \n {text}, See more opc: \n");
+                }
+
                 for (int index = 1; index < documents.Count(); index++)
                 {
-                    strBuild.AppendFormat("{0}. {1}\n", index, documents[index].Title);
+                    strBuild.Append($"{index}. {documents[index].Title}\n");
                 }
 
                 MediaType PlainType = new MediaType(MediaType.DiscreteTypes.Text, MediaType.SubTypes.Plain);
@@ -67,9 +99,9 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
         {
             var documents = new List<ScienceLabDocument>();
 
-            for (int i = 0; i < (result.Pods.Count() < 5 ? result.Pods.Count() : 5); i++)
+            for (int i = 0; i < (result.Pods.Count() < 6 ? result.Pods.Count() : 6); i++)
             {
-                if (result.Pods[i].Title.ToLower() != "input interpretation")
+                if (!result.Pods[i].Title.ToLower().Contains("input"))
                 {
                     var response = await WolframPod2MessageList(result.Pods[i]);
                     documents.AddRange(response);
@@ -90,13 +122,13 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
                 if (pod.Primary == "true")
                 {
                     document = await WolframSubPod2Message(subpod, MediaType.DiscreteTypes.Text);
+                    scienceLabDocument.Add(new ScienceLabDocument { Title = pod.Title, Document = document, Primary = true });
                 }
                 else
                 {
                     document = await WolframSubPod2Message(subpod, MediaType.DiscreteTypes.Image);
+                    scienceLabDocument.Add(new ScienceLabDocument { Title = pod.Title, Document = document });
                 }
-
-                scienceLabDocument.Add(new ScienceLabDocument { Title = pod.Title, Document = document });
             };
 
             return scienceLabDocument;

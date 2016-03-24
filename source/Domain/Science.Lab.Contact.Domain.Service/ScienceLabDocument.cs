@@ -11,5 +11,8 @@ namespace Science.Lab.Contact.Domain.Service
     {
         public string Title { get; set; }
         public Document Document { get; set; }
+
+        public bool Primary { get; set; }
+
     }
 }
