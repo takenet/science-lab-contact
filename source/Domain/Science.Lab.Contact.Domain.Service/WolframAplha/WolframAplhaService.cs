@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Takenet.Omni.Model;
 using WolframAlpha.Api.v2.Components;
 
 namespace Science.Lab.Contact.Domain.Service.WolframAplha
@@ -88,9 +89,22 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
                 }
                 else if(outputFormat == "Image")
                 {
-                    string content = subpod.Img.Src;
-                    var  imageType = new MediaType(MediaType.DiscreteTypes.Image, MediaType.SubTypes.Plain);
-                    var doc = new PlainDocument(content, PlainType);
+
+                    var imageType = AttachmentMediaType.Image;
+                    var mimeType = new MediaType("image", "gif");
+                    var content = subpod.Img.Src;
+                    var thumb = subpod.Img.Src;
+                    var doc = new TextWithAttachments
+                    {
+                        Attachments = new[] {
+                            new Attachment {
+                                MediaType = imageType,
+                                MimeType = new MediaType("image", "gif"),
+                                RemoteUri = content,
+                                ThumbnailUri = thumb
+                            }
+                        }
+                    };
                     list.Add(doc);
                 }
 
