@@ -8,15 +8,14 @@ using Takenet.MessagingHub.Client;
 using Takenet.MessagingHub.Client.Receivers;
 using Takenet.Omni.Model;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Science.Lab.Contact.Domain.Service
 {
     public class PlainTextMessageReceiver : MessageReceiverBase
     {
         #region Private Field
-
-        private static string _moreWords = "more + mais";
-
+        
         private static object _syncRoot = new object();
         private static ConcurrentDictionary<string, MenuDocument> _messageDictionary;
 
@@ -73,7 +72,9 @@ namespace Science.Lab.Contact.Domain.Service
                 MenuDocument menuDocument = null;
                 messageDictionary.TryRemove(message.From.Name, out menuDocument);
 
-                messageDictionary.TryAdd(message.From.Name, new MenuDocument { Count = 0, Documents = documents.ToList() });
+                document = documents.FirstOrDefault().Document;
+
+                messageDictionary.TryAdd(message.From.Name, new MenuDocument { Count = 0, Documents = documents });
             }
 
             await EnvelopeSender.SendMessageAsync(document, message.From);
@@ -83,23 +84,25 @@ namespace Science.Lab.Contact.Domain.Service
         private Document GetCacheDocument(Message message)
         {
             Document result = null;
+            
+            Regex regex = new Regex(@"^\d+$");
+            Match match = regex.Match(message.Content.ToString());
 
-            MenuDocument menuDocument = null;
-
-            if (_moreWords.Contains(message.Content.ToString().ToLower()))
+            if (match.Success)
             {
+                MenuDocument menuDocument = null;
+
                 if (messageDictionary.TryGetValue(message.From.Name, out menuDocument))
                 {
-                    menuDocument.Count += 1;
-
-                    if (menuDocument.Count < menuDocument.Documents.Count)
+                    try
                     {
-                        result = menuDocument.Documents[menuDocument.Count];
+                        result = menuDocument.Documents[int.Parse(message.Content.ToString())].Document;
                     }
-                    else
+                    catch (Exception)
                     {
-                        messageDictionary.TryRemove(message.From.Name, out menuDocument);
+                        
                     }
+                    
                 }
             }
 
@@ -110,6 +113,6 @@ namespace Science.Lab.Contact.Domain.Service
     public class MenuDocument
     {
         public int Count { get; set; }
-        public List<Document> Documents { get; set; }
+        public List<ScienceLabDocument> Documents { get; set; }
     }
 }
