@@ -42,29 +42,52 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
         public async Task<IEnumerable<Document>> Query(Message message)
         {
             QueryResult queryResult = await _wolframAplhaRepository.Query(message.Content.ToString());
-            var documents = await QueryResult2MessageList(queryResult, "Image");
+            var documents = await QueryResult2MessageList(queryResult);
             return documents;
         }
 
-        private async Task<IEnumerable<Document>> QueryResult2MessageList(QueryResult result, string outputFormat)
+        private async Task<IEnumerable<Document>> QueryResult2MessageList(QueryResult result)
         {
             var documents = new List<Document>();
+
+            // First result is the primary pod
             foreach (Pod pod in result.Pods)
             {
-                var response = await WolframPod2MessageList(pod, outputFormat);
-                documents.AddRange(response);
+                if (pod.Primary == "true")
+                {
+                    var response = await WolframPod2MessageList(pod);
+                    documents.AddRange(response);
+                    break;
+                }
+            };
+
+            foreach (Pod pod in result.Pods)
+            {
+                if (pod.Primary != "true")
+                {
+                    var response = await WolframPod2MessageList(pod);
+                    documents.AddRange(response);
+                }
             };
 
             return documents;
         }
 
-        private async Task<IEnumerable<Document>> WolframPod2MessageList(Pod pod, string outputFormat)
+        private async Task<IEnumerable<Document>> WolframPod2MessageList(Pod pod)
         {
             var documents = new List<Document>();
             foreach (SubPod subpod in pod.SubPods)
             {
-                var response = await WolframSubPod2Message(subpod, outputFormat);
-                documents.AddRange(response);
+                IEnumerable<Document> result = null;
+                if (pod.Primary == "true")
+                {
+                    result = await WolframSubPod2Message(subpod, MediaType.DiscreteTypes.Text);
+                }
+                else
+                {
+                    result = await WolframSubPod2Message(subpod, MediaType.DiscreteTypes.Image);
+                }
+                documents.AddRange(result);
             };
 
             return documents;
@@ -75,20 +98,21 @@ namespace Science.Lab.Contact.Domain.Service.WolframAplha
             var documents = await Task.Run<IEnumerable<Document>>(() =>
             {
                 var list = new List<Document>();
-                MediaType PlainType = new MediaType(MediaType.DiscreteTypes.Text, MediaType.SubTypes.Plain);
-                var titleMessage = new Message
-                {
-                    Content = new PlainDocument(subpod.Title, PlainType)
-                };
 
-                if (outputFormat == "PlainText")
+                MediaType PlainType = new MediaType(MediaType.DiscreteTypes.Text, MediaType.SubTypes.Plain);
+                if (outputFormat == MediaType.DiscreteTypes.Text)
                 {
                     string content = subpod.PlainText;
                     var doc = new PlainDocument(content, PlainType);
                     list.Add(doc);
                 }
-                else if(outputFormat == "Image")
+                else if(outputFormat == MediaType.DiscreteTypes.Image)
                 {
+                    if (!String.IsNullOrEmpty(subpod.Title))
+                    {
+                        var titleDoc = new PlainDocument(subpod.Title, PlainType);
+                        list.Add(titleDoc);
+                    }                    
 
                     var imageType = AttachmentMediaType.Image;
                     var mimeType = new MediaType("image", "gif");
